@@ -12,9 +12,9 @@ func (a *application) routes() *chi.Mux {
 	// add routes here...
 	a.App.Routes.Get("/", a.Handlers.Home)
 
-	a.App.Routes.Get("/jet", func(w http.ResponseWriter, r *http.Request) {
-		a.App.Render.JetPage(w, r, "testjet", nil, nil)
-	})
+	// a.App.Routes.Get("/jet", func(w http.ResponseWriter, r *http.Request) {  	//commented out was a inline test
+	// 	a.App.Render.JetPage(w, r, "testjet", nil, nil)
+	// })
 
 	// static routes
 	fileServer := http.FileServer(http.Dir("./public"))

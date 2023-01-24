@@ -76,7 +76,7 @@ func (h *HiSpeed) New(rootPath string) error {
 	}
 
 	var views = jet.NewSet(
-		jet.NewOSFileSystemLoader(fmt.Sprintf("/%s/views", rootPath)),
+		jet.NewOSFileSystemLoader(fmt.Sprintf("%s/views", rootPath)),
 		jet.InDevelopmentMode(),
 	)
 	h.JetViews = views
