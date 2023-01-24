@@ -68,7 +68,7 @@ func (h *HiSpeed) New(rootPath string) error {
 	h.Debug, _ = strconv.ParseBool(os.Getenv("DEBUG"))
 	h.Version = version
 	h.RootPath = rootPath
-	h.Routes = h.routes().(*chi.Mux) //Cast to a * of chi.Mux from a httphandler
+	h.Routes = h.routes().(*chi.Mux) //Cast to a * of chi.Mux from a htttphandler
 
 	h.config = config{
 		port:     os.Getenv("PORT"),
