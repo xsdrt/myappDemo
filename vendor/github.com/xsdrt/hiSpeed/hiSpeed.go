@@ -131,7 +131,7 @@ func (h *HiSpeed) startLoggers() (*log.Logger, *log.Logger) {
 	return infoLog, errorLog
 }
 
-func (h *HiSpeed) CreateRenderer() {
+func (h *HiSpeed) createRenderer() {
 	myRenderer := render.Render{
 		Renderer: h.config.renderer,
 		RootPath: h.RootPath,
