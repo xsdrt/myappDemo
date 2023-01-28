@@ -16,3 +16,17 @@ func (h *Handlers) Home(w http.ResponseWriter, r *http.Request) {
 		h.App.ErrorLog.Println("error rendering:", err)
 	}
 }
+
+func (h *Handlers) GoPage(w http.ResponseWriter, r *http.Request) {
+	err := h.App.Render.GoPage(w, r, "home", nil) //Just use the home.page.tmpl already in the views folder for this one
+	if err != nil {
+		h.App.ErrorLog.Println("error rendering:", err)
+	}
+}
+
+func (h *Handlers) JetPage(w http.ResponseWriter, r *http.Request) {
+	err := h.App.Render.JetPage(w, r, "jet-template", nil, nil) //create a jet-template in the views folder
+	if err != nil {
+		h.App.ErrorLog.Println("error rendering:", err)
+	}
+}
