@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/CloudyKit/jet/v6"
+	"github.com/alexedwards/scs/v2"
 	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
 	"github.com/xsdrt/hiSpeed/render"
@@ -27,14 +28,17 @@ type HiSpeed struct {
 	RootPath string
 	Routes   *chi.Mux
 	Render   *render.Render
+	Session  *scs.SessionManager
 	JetViews *jet.Set
 	config   config //This will not be exported as there is no reason any app that imports HiSpeed should have access to the config...
 }
 
 // This type will not be exported but will hold all the config values for this package...
-type config struct {
-	port     string
-	renderer string
+type config struct { //Application config
+	port        string
+	renderer    string
+	cookie      cookieConfig //setup in types.go
+	sessionType string       //setup in types.go
 }
 
 // New reads the .env file, creates our application config, populates the HiSpeed type with settings
@@ -73,7 +77,16 @@ func (h *HiSpeed) New(rootPath string) error {
 	h.config = config{
 		port:     os.Getenv("PORT"),
 		renderer: os.Getenv("RENDERER"),
+		cookie: cookieConfig{
+			name:     os.Getenv("COOKIE_NAME"),
+			lifetime: os.Getenv("COOKIE_LIFETIME"),
+			persist:  os.Getenv("COOKIE_PERSISTS"),
+			secure:   os.Getenv("COOKIE_SECURE"),
+		},
+		sessionType: os.Getenv("SESSION_TYPE"),
 	}
+
+	//Need to create a session...  just like render is in its own package , putting session in its own pkg also...
 
 	var views = jet.NewSet(
 		jet.NewOSFileSystemLoader(fmt.Sprintf("%s/views", rootPath)),
