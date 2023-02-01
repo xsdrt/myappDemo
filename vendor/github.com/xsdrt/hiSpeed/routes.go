@@ -15,6 +15,7 @@ func (h *HiSpeed) routes() http.Handler {
 		mux.Use(middleware.Logger)
 	}
 	mux.Use(middleware.Recoverer)
+	mux.Use(h.SessionLoad) //using the middleware to load and save a session (h.SessionLoad from the middleware.go)
 
 	// mux.Get("/", func(w http.ResponseWriter, r *http.Request) { //Test route
 	// 	fmt.Fprint(w, "Welcome to HiSpeed") //Should print to the web page the message just to make sure everything is working

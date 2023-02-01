@@ -19,4 +19,5 @@ github.com/joho/godotenv
 ## explicit; go 1.19
 github.com/xsdrt/hiSpeed
 github.com/xsdrt/hiSpeed/render
+github.com/xsdrt/hiSpeed/session
 # github.com/xsdrt/hiSpeed => ../hiSpeed

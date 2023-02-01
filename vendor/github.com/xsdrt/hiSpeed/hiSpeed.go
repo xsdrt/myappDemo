@@ -13,6 +13,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
 	"github.com/xsdrt/hiSpeed/render"
+	"github.com/xsdrt/hiSpeed/session"
 )
 
 const version = "1.0.0"
@@ -82,11 +83,22 @@ func (h *HiSpeed) New(rootPath string) error {
 			lifetime: os.Getenv("COOKIE_LIFETIME"),
 			persist:  os.Getenv("COOKIE_PERSISTS"),
 			secure:   os.Getenv("COOKIE_SECURE"),
+			domain:   os.Getenv("COOKIE_DOMAIN"),
 		},
 		sessionType: os.Getenv("SESSION_TYPE"),
 	}
 
 	//Need to create a session...  just like render is in its own package , putting session in its own pkg also...
+
+	sess := session.Session{
+		CookieLifetime: h.config.cookie.lifetime,
+		CookiePersist:  h.config.cookie.persist,
+		CookieName:     h.config.cookie.name,
+		SessionType:    h.config.sessionType,
+		CookieDomain:   h.config.cookie.domain,
+	}
+
+	h.Session = sess.InitSession()
 
 	var views = jet.NewSet(
 		jet.NewOSFileSystemLoader(fmt.Sprintf("%s/views", rootPath)),
