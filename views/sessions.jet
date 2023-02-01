@@ -14,7 +14,7 @@
                 <img src="/public/images/hsld3.jpg" class="mb-5" style="width: 500px;height:auto;">
                 <h1>HiSpeed </h1> <!--(Jet Templates) just removed this and left the title -->
                 <hr>
-                <small class="text-muted">This is a session vlaue:</small>
+                <small class="text-muted">This is a session vlaue: {{Fun}}</small>
             </div>
         </div>
     </div>

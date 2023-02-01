@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/CloudyKit/jet/v6"
 	"github.com/xsdrt/hiSpeed"
 )
 
@@ -32,11 +33,16 @@ func (h *Handlers) JetPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handlers) SessionTest(w http.ResponseWriter, r *http.Request) {
-	myData := "Fun"
+	myData := "Times" //Following is just a test to make sure this works...
 
-	h.App.Session.Put(r.Context(), "Times", myData)
+	h.App.Session.Put(r.Context(), "Fun", myData) //Context is "Fun" and the myData "Times" is; well the data of course...
 
-	err := h.App.Render.JetPage(w, r, "sessions", nil, nil) //Should call the sessions.jet from the views folder...
+	myValue := h.App.Session.GetString(r.Context(), "Fun")
+
+	vars := make(jet.VarMap)
+	vars.Set("Fun", myValue)
+
+	err := h.App.Render.JetPage(w, r, "sessions", vars, nil) //Should call the sessions.jet from the views folder...
 	if err != nil {
 		h.App.ErrorLog.Println("error rendering:", err)
 	}
