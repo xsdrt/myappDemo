@@ -18,7 +18,7 @@ clean:
 	@echo Cleaned!
 
 start_compose:
-	docker-compose up -del
+	docker-compose up -d
 
 stop_compose:
 	docker-compose down
