@@ -17,6 +17,12 @@ clean:
 	@del .\tmp\${BINARY_NAME}
 	@echo Cleaned!
 
+start_compose:
+	docker-compose up -del
+
+stop_compose:
+	docker-compose down
+
 test:
 	@echo Testing...
 	@go test ./...
