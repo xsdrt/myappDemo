@@ -30,6 +30,7 @@ type HiSpeed struct {
 	Routes   *chi.Mux
 	Render   *render.Render
 	Session  *scs.SessionManager
+	DB       Database
 	JetViews *jet.Set
 	config   config //This will not be exported as there is no reason any app that imports HiSpeed should have access to the config...
 }
@@ -40,6 +41,7 @@ type config struct { //Application config
 	renderer    string
 	cookie      cookieConfig //setup in types.go
 	sessionType string       //setup in types.go
+	database    databaseConfig
 }
 
 // New reads the .env file, creates our application config, populates the HiSpeed type with settings
@@ -68,6 +70,20 @@ func (h *HiSpeed) New(rootPath string) error {
 
 	//Create loggers
 	infoLog, errorLog := h.startLoggers()
+
+	// Connect to the database after loggers created and before populating the variable...
+	if os.Getenv("DATABASE_TYPE") != "" { // If not equal to empty string connect to the database...
+		db, err := h.OpenDB(os.Getenv("DATABASE_TYPE"), h.BuildDSN()) //h.OpenDB is in the driver.go file (just a reference to remember where coming from...)
+		if err != nil {
+			errorLog.Println(err)
+			os.Exit(1) //If cannot connect to database , serious issue so exit...
+		}
+		h.DB = Database{
+			DataType: os.Getenv("DATABASE_TYPE"),
+			Pool:     db,
+		}
+	}
+
 	h.InfoLog = infoLog
 	h.ErrorLog = errorLog
 	h.Debug, _ = strconv.ParseBool(os.Getenv("DEBUG"))
@@ -164,4 +180,29 @@ func (h *HiSpeed) createRenderer() {
 		JetViews: h.JetViews,
 	}
 	h.Render = &myRenderer
+}
+
+func (h *HiSpeed) BuildDSN() string {
+	var dsn string //Made dsn a variable because different db's may/will be different then postgres...
+
+	switch os.Getenv("DATABASE_TYPE") { //Of course we would get this below from the users env file in their app...
+	case "postgres", "postgresql":
+		dsn = fmt.Sprintf("host=%s port=%s user+%s dbname=%s sslmode=%s timezone=UTC connect_timeout=5",
+			os.Getenv("DATABASE_HOST"),
+			os.Getenv("DATABASE_PORT"),
+			os.Getenv("DATABASE_USER"),
+			os.Getenv("DATABASE_NAME"),
+			os.Getenv("DATABASE_SSL_MODE"))
+
+		//Builds a connection string for postgres and because some versions do not build with a password; need to support this... so use an if
+
+		if os.Getenv("DATABASE_PASS") != "" { //If not blank then the user has supplied a password so get it and substitute
+			dsn = fmt.Sprintf("%s password=%s", dsn, os.Getenv("DATABASE_PASS"))
+		}
+
+	default:
+
+	}
+
+	return dsn
 }
