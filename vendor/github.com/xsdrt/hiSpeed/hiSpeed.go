@@ -102,6 +102,10 @@ func (h *HiSpeed) New(rootPath string) error {
 			domain:   os.Getenv("COOKIE_DOMAIN"),
 		},
 		sessionType: os.Getenv("SESSION_TYPE"),
+		database: databaseConfig{ //Populate the database config and values in case needed...
+			database: os.Getenv("DATABASE_TYPE"),
+			dsn:      h.BuildDSN(),
+		},
 	}
 
 	//Need to create a session...  just like render is in its own package , putting session in its own pkg also...
@@ -187,7 +191,7 @@ func (h *HiSpeed) BuildDSN() string {
 
 	switch os.Getenv("DATABASE_TYPE") { //Of course we would get this below from the users env file in their app...
 	case "postgres", "postgresql":
-		dsn = fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=%s timezone=UTC connect_timeout=5",
+		dsn = fmt.Sprintf("host=%s port=%s user+%s dbname=%s sslmode=%s timezone=UTC connect_timeout=5",
 			os.Getenv("DATABASE_HOST"),
 			os.Getenv("DATABASE_PORT"),
 			os.Getenv("DATABASE_USER"),
