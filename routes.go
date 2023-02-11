@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -16,7 +15,7 @@ func (a *application) routes() *chi.Mux {
 	a.App.Routes.Get("/jet-page", a.Handlers.JetPage)
 	a.App.Routes.Get("/sessions", a.Handlers.SessionTest)
 
-	a.App.Routes.Get("/test-database", func(w http.ResponseWriter, r *http.Request) { //Temp route (inline func)...
+	/* a.App.Routes.Get("/test-database", func(w http.ResponseWriter, r *http.Request) { //Temp route (inline func)...  //commented out inline test; saved for reference
 		query := "select id, first_name from users where id = 1" //Query a temp table (need to create)...
 		row := a.App.DB.Pool.QueryRowContext(r.Context(), query) //Just query at most one row to test for now...
 
@@ -29,7 +28,7 @@ func (a *application) routes() *chi.Mux {
 		}
 
 		fmt.Fprintf(w, "%d %s", id, name) //Write to the browser window to show it works..
-	})
+	}) */
 
 	// a.App.Routes.Get("/jet", func(w http.ResponseWriter, r *http.Request) {  	//commented out was a inline test
 	// 	a.App.Render.JetPage(w, r, "testjet", nil, nil)
