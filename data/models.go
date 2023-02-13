@@ -2,6 +2,7 @@ package data
 
 import (
 	"database/sql"
+	"fmt"
 	"os"
 
 	db2 "github.com/upper/db/v4" // Added upper/db to use as an ORM
@@ -35,4 +36,13 @@ func New(databasePool *sql.DB) Models {
 	}
 
 	return Models{}
+}
+
+func getInsertId(i db2.ID) int {
+	idType := fmt.Sprintf("%T", i)
+	if idType == "int64" { //Postgresql returns this type...
+		return int(i.(int64))
+	}
+
+	return i.(int)
 }

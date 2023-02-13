@@ -7,6 +7,7 @@ replace github.com/xsdrt/hiSpeed => ../hiSpeed //whenever  get a request to go g
 require (
 	github.com/upper/db/v4 v4.6.0
 	github.com/xsdrt/hiSpeed v0.0.0-00010101000000-000000000000
+	golang.org/x/crypto v0.6.0
 )
 
 require (
@@ -24,8 +25,7 @@ require (
 	github.com/jackc/pgx/v4 v4.17.2 // indirect
 	github.com/lib/pq v1.10.4 // indirect
 	github.com/segmentio/fasthash v1.0.3 // indirect
-	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/text v0.7.0 // indirect
 )
 
 require (
