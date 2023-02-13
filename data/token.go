@@ -14,6 +14,6 @@ type Token struct {
 	Expires   time.Time `db:"expires" json:"expires"`
 }
 
-func (u *User) table() string { // means to override the table name...
-	return "users"
+func (t *Token) Table() string { // func to get the token in the user.go
+	return "tokens"
 }
