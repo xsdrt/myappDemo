@@ -11,6 +11,8 @@ import (
 	"github.com/upper/db/v4/adapter/postgresql"
 )
 
+// TODO: Need to add validation to all the models...
+
 //A file to store various things from the database, such as a structure for models that correspond to data in tables stored in the db and allow it to be easy for user to use...
 
 var db *sql.DB        // Package level variable assigned a value in the New func; now accessible to the entire package...
@@ -38,7 +40,7 @@ func New(databasePool *sql.DB) Models {
 	return Models{}
 }
 
-func getInsertId(i db2.ID) int {
+func getInsertId(i db2.ID) int { //Get from the db2 (see import above)
 	idType := fmt.Sprintf("%T", i)
 	if idType == "int64" { //Postgresql returns this type...
 		return int(i.(int64))

@@ -1,12 +1,14 @@
 package data
 
 import (
+	"errors"
 	"time"
 
 	up "github.com/upper/db/v4"
 	"golang.org/x/crypto/bcrypt"
 )
 
+// TODO need to add validation to all the models...
 type User struct { //This will be exported add the fields in/from the database hiSpeed (testing)
 	ID        int       `db:"id,omitempty"`
 	FirstName string    `db:"first_name"`
@@ -107,10 +109,10 @@ func (u *User) Delete(id int) error {
 	return nil
 }
 
-func (u *User) Insert(theUser User) (int, error) { //should return an int of the new record or an error...
-	newHash, err := bcrypt.GenerateFromPassword([]byte(theUser.Password), 12)
+func (u *User) Insert(theUser User) (int, error) { //should return an int; ID of the new inserted record of a new user or an error...
+	newHash, err := bcrypt.GenerateFromPassword([]byte(theUser.Password), 12) //Added the bcrypt package from golang.org as we have a password field for new users...
 	if err != nil {
-		return 0, err
+		return 0, err //Return 0 for the id as the insert did not take place and return the error
 	}
 
 	theUser.CreatedAt = time.Now()
@@ -120,10 +122,45 @@ func (u *User) Insert(theUser User) (int, error) { //should return an int of the
 	collection := upper.Collection(u.Table())
 	res, err := collection.Insert(theUser)
 	if err != nil {
-		return 0, err
+		return 0, err //Again if error return 0 for the Id as it was not inserted and the error....
 	}
 
-	id := getInsertId(res.ID())
+	id := getInsertId(res.ID()) //Need to convert the id to an int as some DB's return a different format, so added this func ("getInsertId") in models.go to ensure an int
 
 	return id, nil
+}
+
+func (u *User) ResetPassword(id int, password string) error { // Takes the users id and the new password...
+	newHash, err := bcrypt.GenerateFromPassword([]byte(password), 12) //Need a slice of bytes so cast password to a slice of bytes...
+	if err != nil {
+		return err
+	}
+
+	theUser, err := u.Get(id)
+	if err != nil {
+		return err
+	}
+
+	u.Password = string(newHash)
+
+	err = theUser.Update(*u) //Update the password
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (u *User) PasswordMatches(plainText string) (bool, error) { //Check and verify password matches...when a user is authenticating on a form or an API or whatever using a password...
+	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(plainText))
+	if err != nil {
+		switch {
+		case errors.Is(err, bcrypt.ErrMismatchedHashAndPassword): //Passwords didn't match...
+			return false, nil
+		default: //Something else went wrong...
+			return false, err
+		}
+	}
+
+	return true, nil //If all good return true ands no error
 }
