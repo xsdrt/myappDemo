@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"myappDemo/data"
 	"myappDemo/handlers"
 	"os"
 
@@ -35,6 +36,8 @@ func initApplication() *application {
 	}
 
 	app.App.Routes = app.routes()
+
+	app.Models = data.New(app.App.DB.Pool) //This initializes the models from the call from main.go...
 
 	return app
 }
