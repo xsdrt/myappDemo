@@ -19,7 +19,7 @@ func (h *Handlers) PostUserLogin(w http.ResponseWriter, r *http.Request) {
 	email := r.Form.Get("email")       // ok , now how do we get a user and compare their password in the database?
 	password := r.Form.Get("password") // References to make this work (a reason for comments, for those who don't think comments are necessary)added code
 	// to handlers.go (Models data.Models to the  type struct); to init.hiSpeed.go (myHandlers.Models = app.Models); Hey... now have access to
-	// the necessary functions... Know what this does but needed a ref to remember how/why...
+	// the necessary functions... Know what this does but needed a ref to remember how/why/where to connect the bits :) ...
 	user, err := h.Models.Users.GetByEmail(email)
 	if err != nil {
 		w.Write([]byte(err.Error()))
