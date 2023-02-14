@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"myappDemo/data"
 	"net/http"
+	"strconv"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -45,6 +46,37 @@ func (a *application) routes() *chi.Mux {
 		for _, x := range users {
 			fmt.Fprint(w, x.LastName)
 		}
+	})
+
+	a.App.Routes.Get("/get-user/{id}", func(w http.ResponseWriter, r *http.Request) {
+		id, _ := strconv.Atoi(chi.URLParam(r, "id"))
+
+		u, err := a.Models.Users.Get(id)
+		if err != nil {
+			a.App.ErrorLog.Println(err) //if an error will just print a blank "page" in th web browser...
+			return
+		}
+
+		fmt.Fprintf(w, "%s %s %s", u.FirstName, u.LastName, u.Email)
+	})
+
+	a.App.Routes.Get("/update-user/{id}", func(w http.ResponseWriter, r *http.Request) {
+		id, _ := strconv.Atoi(chi.URLParam(r, "id"))
+		u, err := a.Models.Users.Get(id)
+		if err != nil {
+			a.App.ErrorLog.Println(err) //if an error will just print a blank "page" in th web browser...
+			return
+		}
+
+		u.LastName = a.App.RandomString(10) //Change the name to a random generated string and see if the update works...
+		err = u.Update(*u)                  //Hand it a pointer to u...
+		if err != nil {
+			a.App.ErrorLog.Println(err) //if an error will just print a blank "page" in th web browser...
+			return
+		}
+
+		fmt.Fprintf(w, "updated last name to  %s", u.LastName)
+
 	})
 
 	/* a.App.Routes.Get("/test-database", func(w http.ResponseWriter, r *http.Request) { //Temp route (inline func)...  //commented out inline test; saved for reference
