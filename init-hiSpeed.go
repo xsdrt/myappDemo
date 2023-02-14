@@ -38,6 +38,7 @@ func initApplication() *application {
 	app.App.Routes = app.routes()
 
 	app.Models = data.New(app.App.DB.Pool) //This initializes the models from the call from main.go...
+	myHandlers.Models = app.Models
 
 	return app
 }

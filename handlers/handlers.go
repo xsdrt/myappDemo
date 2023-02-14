@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"myappDemo/data"
 	"net/http"
 
 	"github.com/CloudyKit/jet/v6"
@@ -8,7 +9,8 @@ import (
 )
 
 type Handlers struct {
-	App *hiSpeed.HiSpeed
+	App    *hiSpeed.HiSpeed
+	Models data.Models //When create handlers should have already have models; ie. type data.Models...
 }
 
 func (h *Handlers) Home(w http.ResponseWriter, r *http.Request) {
