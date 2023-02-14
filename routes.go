@@ -18,6 +18,9 @@ func (a *application) routes() *chi.Mux {
 	a.App.Routes.Get("/jet-page", a.Handlers.JetPage)
 	a.App.Routes.Get("/sessions", a.Handlers.SessionTest)
 
+	a.App.Routes.Get("/users/login", a.Handlers.UserLogin)
+	//a.App.Routes.Post("/users/login", a.Handlers.PostUserLogin) //commented out for now as it does not exist yet(TODO)...
+
 	//Test routes for testing the user models with postgresql using inline funcs...
 	a.App.Routes.Get("/create-user", func(w http.ResponseWriter, r *http.Request) { //Test route to add a user...
 		u := data.User{
