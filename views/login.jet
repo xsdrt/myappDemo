@@ -54,7 +54,7 @@ function val() {
     let form = document.getElemntById("login-form");
     if (form.checkValidity() == false){
         this.event.preventDefault();
-        this.event.stopProagation();
+        this.event.stopPropagation();
         form.classList.add("was-validated");
         return;
     }
