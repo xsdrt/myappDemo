@@ -11,9 +11,9 @@ func (h *Handlers) UserLogin(w http.ResponseWriter, r *http.Request) { //User lo
 
 func (h *Handlers) PostUserLogin(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm() //Grab the info from the request to make sure enough info to log a user in...
-	if err != nil {
+	if err != nil {      // With a web application would do some more here... but this not a web app per se  but an app to make building web apps easier in Go...
 		w.Write([]byte(err.Error()))
-		return // With a web application would do some more here... but this not a web app per se  but an app to make building web apps easier in Go...
+		return
 	}
 
 	email := r.Form.Get("email")       // ok , now how do we get a user and compare their password in the database?
@@ -23,7 +23,7 @@ func (h *Handlers) PostUserLogin(w http.ResponseWriter, r *http.Request) {
 	user, err := h.Models.Users.GetByEmail(email)
 	if err != nil {
 		w.Write([]byte(err.Error()))
-		return // With a web application would do some more here... but this not a web app per se  but an app to make building web apps easier in Go...
+		return
 	}
 
 	matches, err := user.PasswordMatches(password)

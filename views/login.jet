@@ -52,7 +52,7 @@ Login
 <script>
 function val() {
     let form = document.getElemntById("login-form");
-    if (form.checkValidity() == false){
+    if (form.checkValidity() === false){
         this.event.preventDefault();
         this.event.stopPropagation();
         form.classList.add("was-validated");
