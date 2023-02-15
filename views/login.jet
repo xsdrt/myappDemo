@@ -51,7 +51,7 @@ Login
 {{block js()}}
 <script>
 function val() {
-    let form = document.getElemntById("login-form");
+    let form = document.getElementById("login-form");
     if (form.checkValidity() === false){
         this.event.preventDefault();
         this.event.stopPropagation();
