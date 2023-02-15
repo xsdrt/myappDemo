@@ -185,6 +185,7 @@ func (h *HiSpeed) createRenderer() {
 		RootPath: h.RootPath,
 		Port:     h.config.port,
 		JetViews: h.JetViews,
+		Session:  h.Session,
 	}
 	h.Render = &myRenderer
 }

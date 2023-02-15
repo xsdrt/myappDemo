@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/CloudyKit/jet/v6"
+	"github.com/alexedwards/scs/v2"
 )
 
 type Render struct {
@@ -18,6 +19,7 @@ type Render struct {
 	Port       string
 	ServerName string
 	JetViews   *jet.Set
+	Session    *scs.SessionManager
 }
 
 type TemplateData struct { //Pass data to the template...
@@ -30,6 +32,16 @@ type TemplateData struct { //Pass data to the template...
 	Port            string
 	ServerName      string
 	Secure          bool
+}
+
+func (h *Render) defaultData(td *TemplateData, r *http.Request) *TemplateData { //To make this work;added a Session w/manager above and then also Session the the createRender in hiSpeed.go
+	td.Secure = h.Secure
+	td.ServerName = h.ServerName
+	td.Port = h.Port
+	if h.Session.Exists(r.Context(), "userID") { //If userID exist then by default; user must be authenticated
+		td.IsAuthenticated = true
+	}
+	return td
 }
 
 // A func to render a page
@@ -79,6 +91,8 @@ func (h *Render) JetPage(w http.ResponseWriter, r *http.Request, templateName st
 	if data != nil {
 		td = data.(*TemplateData)
 	}
+
+	td = h.defaultData(td, r)
 
 	t, err := h.JetViews.GetTemplate(fmt.Sprintf("%s.jet", templateName))
 	if err != nil {
