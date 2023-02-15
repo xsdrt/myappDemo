@@ -15,6 +15,9 @@
                 <h1>HiSpeed </h1> <!--(Jet Templates) just rmoved this and left the title -->
                 <hr>
                 <small class="text-muted">Go build something awesome</small>
+                {{if .IsAuthenticated}}
+                    <small>Authenticated! <a href="/user/logout">Logout</a>.</small>
+                {{end}}
             </div>
         </div>
 

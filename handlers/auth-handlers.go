@@ -41,3 +41,9 @@ func (h *Handlers) PostUserLogin(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/", http.StatusSeeOther) //Then take the valid user back to the Home Page...
 }
+
+func (h *Handlers) Logout(w http.ResponseWriter, r *http.Request) {
+	h.App.Session.RenewToken(r.Context())
+	h.App.Session.Remove(r.Context(), "userID")              //This was what was read in when the user logged in so remove it...
+	http.Redirect(w, r, "/users/login", http.StatusSeeOther) //Then a redirect back to the login page (Home)...
+}
