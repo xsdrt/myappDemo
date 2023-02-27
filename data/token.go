@@ -180,12 +180,12 @@ func (t *Token) AuthenticateToken(r *http.Request) (*User, error) {
 	}
 
 	// get the token from the database...
-	t, err := t.GetByToken(token)
+	tkn, err := t.GetByToken(token)
 	if err != nil {
 		return nil, errors.New("no matching token found")
 	}
 
-	if t.Expires.Before(time.Now()) { //Check to see if the token is expired , because if so, throw an error.
+	if tkn.Expires.Before(time.Now()) { //Check to see if the token is expired , because if so, throw an error.
 		return nil, errors.New("expired token")
 	}
 	user, err := t.GetUserForToken(token)
