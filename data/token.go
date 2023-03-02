@@ -1,10 +1,10 @@
 package data
 
 import (
-	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base32"
 	"errors"
+	"math/rand"
 	"net/http"
 	"strings"
 	"time"
@@ -144,7 +144,7 @@ func (t *Token) Insert(token Token, u User) error {
 func (t *Token) GenerateToken(userID int, ttl time.Duration) (*Token, error) {
 	token := &Token{
 		UserId:  userID,
-		Expires: time.Now().Add(ttl), //Called expiry in the DB, we are adding the time to live to time.Now...
+		Expires: time.Now().Add(ttl), //Called expiry in the DB, we are adding the time to live to time dot Now...
 	}
 
 	randomBytes := make([]byte, 16)
