@@ -2,7 +2,10 @@
     "cSpell.words": [
         "mssql"
     ],
-    
+    "go.buildFlags": [
+        "-tags=integration,unit"
+    ],
+    "go.testTags": "integration,unit",
     
 
 

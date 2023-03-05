@@ -9,7 +9,7 @@ import (
 )
 
 // TODO need to add validation to all the models...
-type User struct { //This will be exported add the fields in/from the database hiSpeed (testing)
+type User struct { //This will be exported add the fields in/from the database lowSpeed (testing)
 	ID        int       `db:"id,omitempty"`
 	FirstName string    `db:"first_name"`
 	LastName  string    `db:"last_name"`
