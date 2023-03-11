@@ -241,3 +241,52 @@ func TestUser_Update(t *testing.T) {
 		t.Error("last name was not updated in the database: ", err)
 	}
 }
+
+func TestUser_PasswordMatches(t *testing.T) {
+	u, err := models.Users.Get(1)
+	if err != nil {
+		t.Error("failed to get user: ", err)
+	}
+
+	matches, err := u.PasswordMatches("password")
+	if err != nil {
+		t.Error("error checking match: ", err)
+	}
+
+	if !matches {
+		t.Error("password does not match when it should")
+	}
+
+	matches, err = u.PasswordMatches("123")
+	if err != nil {
+		t.Error("error checking match: ", err)
+	}
+
+	if matches {
+		t.Error("password matches when it should not")
+	}
+}
+
+func TestUser_ResetPassword(t *testing.T) {
+	err := models.Users.ResetPassword(1, "new_password")
+	if err != nil {
+		t.Error("error resetting password: ", err)
+	}
+
+	err = models.Users.ResetPassword(2, "new_password")
+	if err == nil {
+		t.Error("did not get an error when trying to reset password for non-existent user: ", err)
+	}
+}
+
+func TestUser_Delete(t *testing.T) {
+	err := models.Users.Delete(1)
+	if err != nil {
+		t.Error("failed to delete user: ", err)
+	}
+
+	_, err = models.Users.Get(1)
+	if err == nil {
+		t.Error("retrieved user who was supposed to be deleted")
+	}
+}
