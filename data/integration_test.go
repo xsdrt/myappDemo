@@ -1,16 +1,17 @@
 //go:build integration
 
 // run tests with this command: go test . --tags integration --count=1
+// to get coverage results to the browser use: go test -coverprofile=coverage . --tags integration --count=1   to get a output file in windows (note use coverage.out for mac/linux) and then
+// to open the browser and check integration testing coverage : go tool cover -html=coverage  (note: Again coverage.out for mac/linux)...
 package data
 
 import (
 	"database/sql"
 	"fmt"
 	"log"
-	"time"
-
 	"os"
 	"testing"
+	"time"
 
 	_ "github.com/jackc/pgconn"
 	_ "github.com/jackc/pgx/v4"
@@ -325,5 +326,63 @@ func TestToken_Insert(t *testing.T) {
 	err = models.Tokens.Insert(*token, *u)
 	if err != nil {
 		t.Error("error inserting token: ", err)
+	}
+}
+
+func TestToken_GetUserForToken(t *testing.T) {
+	token := "abc"
+	_, err := models.Tokens.GetUserForToken(token)
+	if err == nil {
+		t.Error("error expected but not received when getting user with a bad token")
+	}
+
+	u, err := models.Users.GetByEmail(dummyUser.Email)
+	if err != nil {
+		t.Error("failed to get user")
+	}
+
+	_, err = models.Tokens.GetUserForToken(u.Token.PlainText)
+	if err != nil {
+		t.Error("failed to get user with valid token: ", err)
+	}
+}
+
+func TestToken_GetTokensForUser(t *testing.T) {
+	tokens, err := models.Tokens.GetTokensForUser(1)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if len(tokens) > 0 {
+		t.Error("tokens returned for non-existent user")
+	}
+}
+
+func TestToken_Get(t *testing.T) {
+	u, err := models.Users.GetByEmail(dummyUser.Email)
+	if err != nil {
+		t.Error("failed to get user")
+	}
+
+	_, err = models.Tokens.Get(u.Token.ID)
+	if err != nil {
+		t.Error("error getting token by id: ", err)
+	}
+}
+
+func TestToken_GetByToken(t *testing.T) {
+	u, err := models.Users.GetByEmail(dummyUser.Email)
+	if err != nil {
+		t.Error("failed to get user")
+	}
+
+	_, err = models.Tokens.GetByToken(u.Token.PlainText)
+	if err != nil {
+		t.Error("error getting token by token: ", err)
+	}
+
+	_, err = models.Tokens.GetByToken("123")
+	if err == nil {
+		t.Error("no error getting non-existing token: ", err)
 	}
 }
