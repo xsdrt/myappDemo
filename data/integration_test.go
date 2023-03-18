@@ -45,6 +45,7 @@ var pool *dockertest.Pool
 
 func TestMain(m *testing.M) {
 	os.Setenv("DATABASE_TYPE", "postgres")
+	os.Setenv("UPPER_DB_LOG", "ERROR")
 
 	p, err := dockertest.NewPool("")
 	if err != nil {
@@ -549,7 +550,7 @@ func TestToken_ValidToken(t *testing.T) {
 		t.Error("valid token reported as invalid")
 	}
 
-	okay, err = models.Tokens.ValidToken("abc")
+	okay, _ = models.Tokens.ValidToken("abc")
 	if okay {
 		t.Error("invalid token reported as valid")
 	}
