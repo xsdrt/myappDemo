@@ -2,14 +2,16 @@ package main //Added a vendor folder so VSCode will not take forever to clear an
 import (
 	"myappDemo/data"
 	"myappDemo/handlers"
+	"myappDemo/middleware"
 
 	"github.com/xsdrt/hiSpeed"
 )
 
 type application struct {
-	App      *hiSpeed.HiSpeed
-	Handlers *handlers.Handlers
-	Models   data.Models //Initialize the models in the initApplication in func main
+	App        *hiSpeed.HiSpeed
+	Handlers   *handlers.Handlers
+	Models     data.Models            //Initialize the models in the initApplication in func main
+	Middleware *middleware.Middleware //this is reflected in init-hiSpeed.go file
 }
 
 func main() {
