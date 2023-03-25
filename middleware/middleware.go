@@ -2,7 +2,8 @@ package middleware
 
 import (
 	"myappDemo/data"
-	"myappDemo/vendor/github.com/xsdrt/hiSpeed"
+
+	"github.com/xsdrt/hiSpeed"
 )
 
 type Middleware struct {
