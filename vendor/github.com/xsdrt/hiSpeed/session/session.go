@@ -1,11 +1,13 @@
 package session
 
 import (
+	"database/sql"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
 
+	"github.com/alexedwards/scs/postgresstore"
 	"github.com/alexedwards/scs/v2"
 )
 
@@ -16,6 +18,7 @@ type Session struct { //This will be exportable..
 	CookieDomain   string
 	SessionType    string
 	CookieSecure   string
+	DBPool         *sql.DB //Fill/populate the DBPool in the hiSpeed.go file sess
 }
 
 func (c *Session) InitSession() *scs.SessionManager {
@@ -53,6 +56,7 @@ func (c *Session) InitSession() *scs.SessionManager {
 	case "mysql", "mariadb":
 
 	case "postgres", "postgresql":
+		session.Store = postgresstore.New(c.DBPool)
 
 	case "mssql":
 
