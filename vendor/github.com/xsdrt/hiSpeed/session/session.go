@@ -56,7 +56,7 @@ func (c *Session) InitSession() *scs.SessionManager {
 	case "mysql", "mariadb":
 
 	case "postgres", "postgresql":
-		session.Store = postgresstore.New(c.DBPool)
+		session.Store = postgresstore.New(c.DBPool) //Set the sessions store
 
 	case "mssql":
 

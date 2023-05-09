@@ -10,6 +10,6 @@ cover:
 coverage:
 	@go test -cover ./...
 
-## build_cli: builds the command line tool celeritas and copies it to myapp
+## build_cli: builds the command line tool hiSpeed and copies it to myapp
 build_cli:
 	@go build -o ../myappDemo/hiSpeed.exe ./cmd/cli
