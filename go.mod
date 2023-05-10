@@ -22,8 +22,11 @@ require (
 	github.com/Azure/go-autorest/tracing v0.6.0 // indirect
 	github.com/Microsoft/go-winio v0.5.2 // indirect
 	github.com/Nvveen/Gotty v0.0.0-20120604004816-cd527374f1e5 // indirect
+	github.com/alexedwards/scs/mssqlstore v0.0.0-20230327161757-10d4299e3b24 // indirect
+	github.com/alexedwards/scs/mysqlstore v0.0.0-20230327161757-10d4299e3b24 // indirect
 	github.com/alexedwards/scs/postgresstore v0.0.0-20230327161757-10d4299e3b24 // indirect
 	github.com/alexedwards/scs/v2 v2.5.0 // indirect
+	github.com/asaskevich/govalidator v0.0.0-20190424111038-f61b66f89f4a // indirect
 	github.com/cenkalti/backoff/v4 v4.1.3 // indirect
 	github.com/containerd/continuity v0.3.0 // indirect
 	github.com/denisenkom/go-mssqldb v0.11.0 // indirect

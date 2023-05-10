@@ -73,7 +73,15 @@ func (a *application) routes() *chi.Mux {
 		}
 
 		u.LastName = a.App.RandomString(10) //Change the name to a random generated string and see if the update works...
-		err = u.Update(*u)                  //Hand it a pointer to u...
+
+		validator := a.App.Validator(nil)                                                             //Initialize a validator and running a test check to make sure working...
+		validator.Check(len(u.LastName) > 20, "last_name", "Last name must be 20 characters or more") //designed to fail
+
+		if !validator.Valid() {
+			fmt.Fprint(w, "failed validation")
+			return
+		}
+		err = u.Update(*u) //Hand it a pointer to u...
 		if err != nil {
 			a.App.ErrorLog.Println(err) //if an error will just print a blank "page" in th web browser...
 			return
