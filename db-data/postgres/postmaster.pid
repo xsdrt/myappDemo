@@ -1,10 +1,6 @@
 1
 /var/lib/postgresql/data
-<<<<<<< HEAD
-1683749914
-=======
-1683747129
->>>>>>> DevTest
+1683750839
 5432
 /var/run/postgresql
 *
