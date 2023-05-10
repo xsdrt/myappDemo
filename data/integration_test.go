@@ -57,7 +57,7 @@ func TestMain(m *testing.M) {
 
 	opts := dockertest.RunOptions{
 		Repository: "postgres",
-		Tag:        "13.4",
+		Tag:        "13.10",
 		Env: []string{
 			"POSTGRES_USER=" + user,
 			"POSTGRES_PASSWORD=" + password,
