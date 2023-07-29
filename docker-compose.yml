@@ -4,7 +4,7 @@ services:
 
 #  start Postgres, and ensure that data is stored to a mounted volume
   postgres:
-    image: 'postgres:13.10'
+    image: 'postgres:13.11'
     ports:
       - "5432:5432"
     restart: always
