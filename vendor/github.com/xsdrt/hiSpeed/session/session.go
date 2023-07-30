@@ -23,22 +23,22 @@ type Session struct { //This will be exportable..
 	DBPool         *sql.DB //Fill/populate the DBPool in the hiSpeed.go file sess...
 }
 
-func (c *Session) InitSession() *scs.SessionManager {
+func (h *Session) InitSession() *scs.SessionManager {
 	var persist, secure bool
 
 	//How long should sessions last?
-	minutes, err := strconv.Atoi(c.CookieLifetime)
+	minutes, err := strconv.Atoi(h.CookieLifetime) //changed all c. to h. 7/29/23
 	if err != nil {
 		minutes = 60
 	}
 
 	//Should cookies persist?
-	if strings.ToLower(c.CookiePersist) == "true" {
+	if strings.ToLower(h.CookiePersist) == "true" {
 		persist = true
 	}
 
 	//Must cookies be secure?
-	if strings.ToLower(c.CookieSecure) == "true" {
+	if strings.ToLower(h.CookieSecure) == "true" {
 		secure = true
 	}
 
@@ -46,23 +46,23 @@ func (c *Session) InitSession() *scs.SessionManager {
 	session := scs.New()
 	session.Lifetime = time.Duration(minutes) * time.Minute
 	session.Cookie.Persist = persist
-	session.Cookie.Name = c.CookieName
+	session.Cookie.Name = h.CookieName
 	session.Cookie.Secure = secure
-	session.Cookie.Domain = c.CookieDomain
+	session.Cookie.Domain = h.CookieDomain
 	session.Cookie.SameSite = http.SameSiteLaxMode
 
 	//Which session store to use...
-	switch strings.ToLower(c.SessionType) {
+	switch strings.ToLower(h.SessionType) {
 	case "redis":
 
 	case "mysql", "mariadb":
-		session.Store = mysqlstore.New(c.DBPool)
+		session.Store = mysqlstore.New(h.DBPool)
 
 	case "postgres", "postgresql":
-		session.Store = postgresstore.New(c.DBPool) //Set the sessions store
+		session.Store = postgresstore.New(h.DBPool) //Set the sessions store
 
 	case "mssql":
-		session.Store = mssqlstore.New(c.DBPool)
+		session.Store = mssqlstore.New(h.DBPool)
 
 	default:
 		// cookie

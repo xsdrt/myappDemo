@@ -21,8 +21,8 @@ import (
 //grab the drivers also for mysql-postgres-sqlserver ie: go get github.com/golang-migrate/migrate/v4/database/postgres replace the db name(s) with the ones you want
 //and also  go get github.com/golang-migrate/migrate/v4/source/file
 
-func (hs *HiSpeed) MigrateUp(dsn string) error { //need to change the postgres driver to the one used by golang-migrate !!!
-	rootPath := filepath.ToSlash(hs.RootPath)
+func (h *HiSpeed) MigrateUp(dsn string) error { //need to change the postgres driver to the one used by golang-migrate !!!
+	rootPath := filepath.ToSlash(h.RootPath)
 	m, err := migrate.New("file://"+rootPath+"/migrations", dsn) //for windows path...hmmm but if using wsl might not need to use; leave it for now as end user might mot be using wsl
 	if err != nil {
 		return err
@@ -37,8 +37,8 @@ func (hs *HiSpeed) MigrateUp(dsn string) error { //need to change the postgres d
 	return nil
 }
 
-func (hs *HiSpeed) MigrateDownAll(dsn string) error {
-	rootPath := filepath.ToSlash(hs.RootPath)
+func (h *HiSpeed) MigrateDownAll(dsn string) error {
+	rootPath := filepath.ToSlash(h.RootPath)
 	m, err := migrate.New("file://"+rootPath+"/migrations", dsn)
 	if err != nil {
 		return err
@@ -52,8 +52,8 @@ func (hs *HiSpeed) MigrateDownAll(dsn string) error {
 	return nil
 }
 
-func (hs *HiSpeed) Steps(n int, dsn string) error { //if the int n is positive; will run up migrations; if a negative run down migrations...
-	rootPath := filepath.ToSlash(hs.RootPath)
+func (h *HiSpeed) Steps(n int, dsn string) error { //if the int n is positive; will run up migrations; if a negative run down migrations...
+	rootPath := filepath.ToSlash(h.RootPath)
 	m, err := migrate.New("file://"+rootPath+"/migrations", dsn)
 	if err != nil {
 		return err
@@ -68,8 +68,8 @@ func (hs *HiSpeed) Steps(n int, dsn string) error { //if the int n is positive; 
 }
 
 // Sometime when running migrations might have an error in the file itself, sounds like golang-migrate will mark this as dirty in the db and not allow , well force a fix.
-func (hs *HiSpeed) MigrateForce(dsn string) error {
-	rootPath := filepath.ToSlash(hs.RootPath)
+func (h *HiSpeed) MigrateForce(dsn string) error {
+	rootPath := filepath.ToSlash(h.RootPath)
 	m, err := migrate.New("file://"+rootPath+"/migrations", dsn)
 	if err != nil {
 		return err
